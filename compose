@@ -1,0 +1,32 @@
+node-red:
+    image: nodered/node-red:latest
+    container_name: node-red
+    ports:
+      - "1880:1880"  # Puerto de la interfaz web de Node-RED
+    volumes:
+      - nodered_data:/data
+    environment:
+      - TZ=America/Argentina/Buenos_Aires  # Configura tu zona horaria
+    restart: always
+    networks:
+      iot:
+        aliases:
+          - node_red_host
+
+
+
+  mytb:
+    restart: always
+    image: "thingsboard/tb-postgres"
+    ports:
+      - "8080:9090"
+#      - "1890:1883"
+#      - "1883:1883"
+      - "7070:7070"
+      - "5683-5688:5683-5688/udp"
+    environment:
+      TB_QUEUE_TYPE: in-memory
+    volumes:
+      - ~/.mytb-data:/data
+      - ~/.mytb-logs:/var/log/thingsboard
+   
